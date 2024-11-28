@@ -7,7 +7,9 @@ module.exports = {
   ],
   theme: {
     extend: {
-      colors: {},
+      maxWidth: {
+        "8xl": "1920px",
+      },
     },
   },
   plugins: [],
