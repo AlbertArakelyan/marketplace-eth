@@ -1,6 +1,6 @@
-import { Hero } from "@/components/common";
-import { CourseList } from "@/components/Course";
-import { BaseLayout } from "@/components/layout";
+import { Hero } from "@/components/ui/common";
+import { CourseList } from "@/components/ui/Course";
+import { BaseLayout } from "@/components/ui/layout";
 
 import { getAllCourses } from "@/content/courses/fetcher";
 

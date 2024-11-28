@@ -10,7 +10,7 @@ const List = ({ courses }) => {
           className="bg-white rounded-xl shadow-md overflow-hidden md:max-w-2xl"
         >
           <div className="flex h-full">
-            <div className="flex h-full w-full">
+            <div className="flex h-full w-full max-w-[200px]">
               <Image
                 className="object-cover"
                 src={course.coverImage}
