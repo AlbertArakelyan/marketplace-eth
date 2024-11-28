@@ -8,10 +8,14 @@ const Course = ({ course }) => {
   return (
     <BaseLayout>
       <div className="py-4">
-        <CourseHero />
+        <CourseHero
+          title={course.title}
+          description={course.description}
+          image={course.coverImage}
+        />
       </div>
-      <KeyPoints />
-      <Curriculum />
+      <KeyPoints points={course.wsl} />
+      <Curriculum locked={true} />
       <Modal />
     </BaseLayout>
   );
