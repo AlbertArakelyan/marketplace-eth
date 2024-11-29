@@ -1,13 +1,51 @@
-import { useContext, createContext } from "react";
+import { useState, useContext, useEffect, createContext } from "react";
+import Web3 from "web3";
+import detectEthereumProvider from "@metamask/detect-provider";
 
 const Web3Context = createContext({});
 
 const Web3Provider = ({ children }) => {
-  return <Web3Context.Provider value={{}}>{children}</Web3Context.Provider>;
+  const [web3Api, setWeb3Api] = useState({
+    provider: null,
+    web3: null,
+    contract: null,
+    isLoading: true,
+  });
+
+  useEffect(() => {
+    const loadProvider = async () => {
+      const provider = await detectEthereumProvider();
+
+      if (provider) {
+        const web3 = new Web3(provider);
+        setWeb3Api({
+          provider,
+          web3,
+          contract: null,
+          isLoading: false,
+        });
+      } else {
+        setWeb3Api((prevWeb3Api) => ({
+          ...prevWeb3Api,
+          isLoading: false,
+        }));
+        console.error("Please install MetaMask.");
+      }
+    };
+
+    loadProvider();
+  }, []);
+
+  return (
+    <Web3Context.Provider value={web3Api}>
+      {children}
+    </Web3Context.Provider>
+  );
 };
 
 export const useWeb3 = () => {
-  return useContext(Web3Context);
+  const ctx = useContext(Web3Context);
+  return ctx;
 };
 
 export default Web3Provider;
