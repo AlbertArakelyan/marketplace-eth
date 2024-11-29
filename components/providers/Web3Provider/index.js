@@ -1,4 +1,4 @@
-import { useState, useContext, useEffect, createContext } from "react";
+import { useState, useContext, useEffect, createContext, useMemo } from "react";
 import Web3 from "web3";
 import detectEthereumProvider from "@metamask/detect-provider";
 
@@ -36,10 +36,27 @@ const Web3Provider = ({ children }) => {
     loadProvider();
   }, []);
 
+  const _web3Api = useMemo(() => {
+    return {
+      ...web3Api,
+      connect: web3Api.provider
+        ? async () => {
+            try {
+              await web3Api.provider.request({ method: "eth_requestAccounts" });
+            } catch {
+              console.error("Cannot retrieve accounts, try to reload your browser please.");
+              // location.reload();
+            }
+          }
+        : () =>
+            console.error(
+              "Cannot connect to Metamask, try to reload your browser please."
+            ),
+    };
+  }, [web3Api]);
+
   return (
-    <Web3Context.Provider value={web3Api}>
-      {children}
-    </Web3Context.Provider>
+    <Web3Context.Provider value={_web3Api}>{children}</Web3Context.Provider>
   );
 };
 

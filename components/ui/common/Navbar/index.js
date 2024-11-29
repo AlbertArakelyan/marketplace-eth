@@ -1,6 +1,10 @@
 import Link from "next/link";
 
+import { useWeb3 } from "@/components/providers";
+
 const Navbar = () => {
+  const { connect } = useWeb3();
+
   return (
     <section>
       <div className="relative pt-6 px-4 sm:px-6 lg:px-8">
@@ -33,12 +37,12 @@ const Navbar = () => {
               >
                 Wishlist
               </Link>
-              <a
-                href="#"
+              <button
                 className="px-8 py-3 border text-base font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700"
+                onClick={connect}
               >
                 Connect
-              </a>
+              </button>
             </div>
           </div>
         </nav>
