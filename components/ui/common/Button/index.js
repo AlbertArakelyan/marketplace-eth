@@ -1,11 +1,12 @@
-const Button = ({
-  children,
-  className = "text-white bg-indigo-600 hover:bg-indigo-700",
-  ...props
-}) => {
+const Button = ({ children, className = "", variant = "purple", ...props }) => {
+  const variants = {
+    purple: "text-white bg-indigo-600 hover:bg-indigo-700",
+    red: "text-white bg-red-600 hover:bg-red-700",
+  };
+
   return (
     <button
-      className={`disabled:opacity-50 disabled:cursor-not-allowed px-8 py-3 border text-base font-medium rounded-md ${className}`}
+      className={`disabled:opacity-50 disabled:cursor-not-allowed px-8 py-3 border text-base font-medium rounded-md ${variants[variant]} ${className}`}
       {...props}
     >
       {children}

@@ -3,9 +3,11 @@ import Link from "next/link";
 import { Button } from "@/components/ui/common";
 
 import { useWeb3 } from "@/components/providers";
+import { useAccount } from "@/components/web3/hooks/useAccount";
 
 const Navbar = () => {
   const { connect, isLoading, isWeb3Loaded } = useWeb3();
+  const { account } = useAccount();
 
   return (
     <section>
@@ -40,14 +42,17 @@ const Navbar = () => {
                 Wishlist
               </Link>
               {isLoading ? (
-                <Button
-                  disabled
-                  onClick={connect}
-                >
+                <Button disabled onClick={connect}>
                   Connecting...
                 </Button>
               ) : isWeb3Loaded ? (
-                <Button onClick={connect}>Connect</Button>
+                account ? (
+                  <Button className="cursor-default hover:bg-indigo-600">
+                    Hi there!
+                  </Button>
+                ) : (
+                  <Button onClick={connect}>Connect</Button>
+                )
               ) : (
                 <a
                   href="https://metamask.io/"
@@ -62,6 +67,13 @@ const Navbar = () => {
           </div>
         </nav>
       </div>
+      {account && (
+        <div className="flex justify-end mt-1 sm:px-6 lg:px-8">
+          <span className="text-white bg-indigo-600 rounded-md p-2">
+            {account}
+          </span>
+        </div>
+      )}
     </section>
   );
 };

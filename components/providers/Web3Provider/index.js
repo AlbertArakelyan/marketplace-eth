@@ -2,6 +2,8 @@ import { useState, useContext, useEffect, createContext, useMemo } from "react";
 import Web3 from "web3";
 import detectEthereumProvider from "@metamask/detect-provider";
 
+import { setupHooks } from "./hooks/setupHooks";
+
 const Web3Context = createContext({});
 
 const Web3Provider = ({ children }) => {
@@ -37,15 +39,19 @@ const Web3Provider = ({ children }) => {
   }, []);
 
   const _web3Api = useMemo(() => {
+    const { web3, provider } = web3Api;
     return {
       ...web3Api,
-      isWeb3Loaded: web3Api.web3 !== null,
-      connect: web3Api.provider
+      isWeb3Loaded: web3 !== null,
+      getHooks: () => setupHooks(web3, provider),
+      connect: provider
         ? async () => {
             try {
-              await web3Api.provider.request({ method: "eth_requestAccounts" });
+              await provider.request({ method: "eth_requestAccounts" });
             } catch {
-              console.error("Cannot retrieve accounts, try to reload your browser please.");
+              console.error(
+                "Cannot retrieve accounts, try to reload your browser please."
+              );
               // location.reload();
             }
           }
@@ -62,8 +68,14 @@ const Web3Provider = ({ children }) => {
 };
 
 export const useWeb3 = () => {
-  const ctx = useContext(Web3Context);
-  return ctx;
+  return useContext(Web3Context);
+};
+
+export const useHooks = (cb) => {
+  const { getHooks } = useWeb3();
+  const hooks = getHooks();
+
+  return cb(hooks);
 };
 
 export default Web3Provider;
