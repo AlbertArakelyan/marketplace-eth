@@ -39,6 +39,7 @@ const Web3Provider = ({ children }) => {
   const _web3Api = useMemo(() => {
     return {
       ...web3Api,
+      isWeb3Loaded: web3Api.web3 !== null,
       connect: web3Api.provider
         ? async () => {
             try {
