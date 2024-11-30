@@ -46,7 +46,7 @@ const Navbar = () => {
                   Connecting...
                 </Button>
               ) : isWeb3Loaded ? (
-                account ? (
+                account.data ? (
                   <Button className="cursor-default hover:bg-indigo-600">
                     Hi there!
                   </Button>
@@ -67,10 +67,10 @@ const Navbar = () => {
           </div>
         </nav>
       </div>
-      {account && (
+      {account.data && (
         <div className="flex justify-end mt-1 sm:px-6 lg:px-8">
           <span className="text-white bg-indigo-600 rounded-md p-2">
-            {account}
+            {account.data}
           </span>
         </div>
       )}
