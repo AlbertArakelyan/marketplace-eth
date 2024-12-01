@@ -9,7 +9,7 @@ import { useAccount } from "@/components/hooks/web3";
 const Navbar = () => {
   const { pathname } = useRouter();
 
-  const { connect, isLoading, isWeb3Loaded } = useWeb3();
+  const { connect, isLoading, web3 } = useWeb3();
   const { account } = useAccount();
 
   return (
@@ -48,7 +48,7 @@ const Navbar = () => {
                 <Button disabled onClick={connect}>
                   Connecting...
                 </Button>
-              ) : isWeb3Loaded ? (
+              ) : web3 !== null ? (
                 account.data ? (
                   <Button className="cursor-default hover:bg-indigo-600">
                     Hi there! {account.isAdmin && "Admin"}
