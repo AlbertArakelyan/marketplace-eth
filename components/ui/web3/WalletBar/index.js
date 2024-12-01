@@ -1,10 +1,8 @@
-const WalletBar = ({address}) => {
+const WalletBar = ({ address, network }) => {
   return (
     <section className="text-white bg-indigo-600">
       <div className="p-8">
-        <h1 className="text-2xl">
-          Hello, {address}
-        </h1>
+        <h1 className="text-2xl">Hello, {address}</h1>
         <h2 className="subtitle mb-5 text-xl">
           I hope you are having a great day!
         </h2>
@@ -22,7 +20,7 @@ const WalletBar = ({address}) => {
           <div>
             <div>
               <span>Currently on </span>
-              <strong className="text-2xl">Ethereum Main Network</strong>
+              <strong className="text-2xl">{network}</strong>
             </div>
           </div>
         </div>
