@@ -4,7 +4,7 @@ import { useRouter } from "next/router";
 import { Button } from "@/components/ui/common";
 
 import { useWeb3 } from "@/components/providers";
-import { useAccount } from "@/components/hooks/web3/useAccount";
+import { useAccount } from "@/components/hooks/web3";
 
 const Navbar = () => {
   const { pathname } = useRouter();

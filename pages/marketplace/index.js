@@ -2,8 +2,7 @@ import { CourseCard, CourseList } from "@/components/ui/Course";
 import { BaseLayout } from "@/components/ui/layout";
 import { WalletBar } from "@/components/ui/web3";
 
-import { useAccount } from "@/components/hooks/web3/useAccount";
-import { useNetwork } from "@/components/hooks/web3/useNetwork";
+import { useAccount, useNetwork } from "@/components/hooks/web3";
 
 import { getAllCourses } from "@/content/courses/fetcher";
 

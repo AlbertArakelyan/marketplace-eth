@@ -42,7 +42,6 @@ export const handler = (web3, provider) => () => {
   return {
     network: {
       data,
-      hasInitialResponse: data || error,
       mutate,
       target: targetNetwork,
       isSupported: data === targetNetwork,
