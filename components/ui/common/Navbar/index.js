@@ -9,7 +9,7 @@ import { useAccount } from "@/components/hooks/web3";
 const Navbar = () => {
   const { pathname } = useRouter();
 
-  const { connect, isLoading, web3 } = useWeb3();
+  const { connect, isLoading, requireInstall } = useWeb3();
   const { account } = useAccount();
 
   return (
@@ -48,15 +48,11 @@ const Navbar = () => {
                 <Button disabled onClick={connect}>
                   Connecting...
                 </Button>
-              ) : web3 !== null ? (
-                account.data ? (
-                  <Button className="cursor-default hover:bg-indigo-600">
-                    Hi there! {account.isAdmin && "Admin"}
-                  </Button>
-                ) : (
-                  <Button onClick={connect}>Connect</Button>
-                )
-              ) : (
+              ) : account.data ? (
+                <Button className="cursor-default hover:bg-indigo-600">
+                  Hi there! {account.isAdmin && "Admin"}
+                </Button>
+              ) : requireInstall ? (
                 <a
                   href="https://metamask.io/"
                   target="_blank"
@@ -65,6 +61,8 @@ const Navbar = () => {
                 >
                   Install Metamask
                 </a>
+              ) : (
+                <Button onClick={connect}>Connect</Button>
               )}
             </div>
           </div>
