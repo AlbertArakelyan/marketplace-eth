@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { useRouter } from "next/router";
 
 import { Button } from "@/components/ui/common";
 
@@ -6,6 +7,8 @@ import { useWeb3 } from "@/components/providers";
 import { useAccount } from "@/components/hooks/web3/useAccount";
 
 const Navbar = () => {
+  const { pathname } = useRouter();
+
   const { connect, isLoading, isWeb3Loaded } = useWeb3();
   const { account } = useAccount();
 
@@ -22,7 +25,7 @@ const Navbar = () => {
                 Home
               </Link>
               <Link
-                href="#"
+                href="/marketplace"
                 className="font-medium mr-8 text-gray-500 hover:text-gray-900"
               >
                 Marketplace
@@ -67,7 +70,7 @@ const Navbar = () => {
           </div>
         </nav>
       </div>
-      {account.data && (
+      {!pathname.includes("marketplace") && account.data && (
         <div className="flex justify-end mt-1 sm:px-6 lg:px-8">
           <span className="text-white bg-indigo-600 rounded-md p-2">
             {account.data}
