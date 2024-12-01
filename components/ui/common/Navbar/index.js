@@ -3,7 +3,7 @@ import Link from "next/link";
 import { Button } from "@/components/ui/common";
 
 import { useWeb3 } from "@/components/providers";
-import { useAccount } from "@/components/web3/hooks/useAccount";
+import { useAccount } from "@/components/hooks/web3/useAccount";
 
 const Navbar = () => {
   const { connect, isLoading, isWeb3Loaded } = useWeb3();
