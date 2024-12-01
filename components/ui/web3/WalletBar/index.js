@@ -18,10 +18,23 @@ const WalletBar = ({ address, network }) => {
             </div>
           </div>
           <div>
-            <div>
-              <span>Currently on </span>
-              <strong className="text-2xl">{network}</strong>
-            </div>
+            {network.data &&
+              !network.hasInitialResponse &&
+              !network.isSupported && (
+                <div className="bg-red-400 p-4 rounded-lg">
+                  <p>Connected to the Wrong Network</p>
+                  <span>
+                    Connect to:{" "}
+                    <strong className="text-2xl">{network.target}</strong>
+                  </span>
+                </div>
+              )}
+            {network.data && (
+              <div>
+                <span>Currently on </span>
+                <strong className="text-2xl">{network.data}</strong>
+              </div>
+            )}
           </div>
         </div>
       </div>

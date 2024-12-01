@@ -14,7 +14,15 @@ const Marketplace = ({ courses }) => {
   return (
     <BaseLayout>
       <div className="my-4">
-        <WalletBar address={account.data} network={network.data} />
+        <WalletBar
+          address={account.data}
+          network={{
+            data: network.data,
+            target: network.target,
+            isSupported: network.isSupported,
+            hasInitialResponse: network.hasInitialResponse,
+          }}
+        />
       </div>
       <CourseList courses={courses}>
         {(course) => <CourseCard key={course.id} course={course} />}
