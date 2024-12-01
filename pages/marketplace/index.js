@@ -1,4 +1,4 @@
-import { CourseList } from "@/components/ui/Course";
+import { CourseCard, CourseList } from "@/components/ui/Course";
 import { BaseLayout } from "@/components/ui/layout";
 import { WalletBar } from "@/components/ui/web3";
 
@@ -16,7 +16,9 @@ const Marketplace = ({ courses }) => {
       <div className="my-4">
         <WalletBar address={account.data} network={network.data} />
       </div>
-      <CourseList courses={courses} />
+      <CourseList courses={courses}>
+        {(course) => <CourseCard key={course.id} course={course} />}
+      </CourseList>
     </BaseLayout>
   );
 };
