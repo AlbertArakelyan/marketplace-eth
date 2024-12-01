@@ -48,7 +48,7 @@ const Navbar = () => {
               ) : isWeb3Loaded ? (
                 account.data ? (
                   <Button className="cursor-default hover:bg-indigo-600">
-                    Hi there!
+                    Hi there! {account.isAdmin && "Admin"}
                   </Button>
                 ) : (
                   <Button onClick={connect}>Connect</Button>
