@@ -2,17 +2,19 @@ import { useState } from "react";
 
 import { CourseCard, CourseList } from "@/components/ui/Course";
 import { BaseLayout } from "@/components/ui/layout";
-import { WalletBar } from "@/components/ui/web3";
+import { EthRates, WalletBar } from "@/components/ui/web3";
 import { Button } from "@/components/ui/common";
 import { OrderModal } from "@/components/ui/Order";
 
 import { useAccount, useNetwork } from "@/components/hooks/web3";
+import { useEthPrice } from "@/components/hooks/useEthPrice";
 
 import { getAllCourses } from "@/content/courses/fetcher";
 
 const Marketplace = ({ courses }) => {
   const { account } = useAccount();
   const { network } = useNetwork();
+  const { eth } = useEthPrice();
 
   const [selectedCourse, setSelectedCourse] = useState(null);
 
@@ -32,6 +34,7 @@ const Marketplace = ({ courses }) => {
             hasInitialResponse: network.hasInitialResponse,
           }}
         />
+        <EthRates eth={eth.data} ethPerItem={eth.perItem} />
       </div>
       <CourseList courses={courses}>
         {(course) => (
