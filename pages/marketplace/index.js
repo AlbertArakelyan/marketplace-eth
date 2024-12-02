@@ -1,7 +1,10 @@
+import { useState } from "react";
+
 import { CourseCard, CourseList } from "@/components/ui/Course";
 import { BaseLayout } from "@/components/ui/layout";
 import { WalletBar } from "@/components/ui/web3";
 import { Button } from "@/components/ui/common";
+import { OrderModal } from "@/components/ui/Order";
 
 import { useAccount, useNetwork } from "@/components/hooks/web3";
 
@@ -10,6 +13,12 @@ import { getAllCourses } from "@/content/courses/fetcher";
 const Marketplace = ({ courses }) => {
   const { account } = useAccount();
   const { network } = useNetwork();
+
+  const [selectedCourse, setSelectedCourse] = useState(null);
+
+  const handleCloseOrderModal = () => {
+    setSelectedCourse(null);
+  };
 
   return (
     <BaseLayout>
@@ -31,12 +40,20 @@ const Marketplace = ({ courses }) => {
             course={course}
             Footer={() => (
               <div>
-                <Button variant="lightPurple">Purchase</Button>
+                <Button
+                  variant="lightPurple"
+                  onClick={() => setSelectedCourse(course)}
+                >
+                  Purchase
+                </Button>
               </div>
             )}
           />
         )}
       </CourseList>
+      {selectedCourse && (
+        <OrderModal course={selectedCourse} onClose={handleCloseOrderModal} />
+      )}
     </BaseLayout>
   );
 };
