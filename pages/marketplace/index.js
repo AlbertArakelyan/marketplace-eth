@@ -21,9 +21,7 @@ const Marketplace = ({ courses }) => {
 
   return (
     <BaseLayout>
-      <div className="my-4">
-        <MarketHeader />
-      </div>
+      <MarketHeader />
       <CourseList courses={courses}>
         {(course) => (
           <CourseCard
