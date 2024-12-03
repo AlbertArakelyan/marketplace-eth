@@ -2,14 +2,52 @@ import { useEffect, useState } from "react";
 
 import { Modal, Button } from "@/components/ui/common";
 
+import { useEthPrice } from "@/components/hooks/useEthPrice";
+
+const defaultOrder = {
+  price: "",
+  email: "",
+  confirmationEmail: "",
+};
+
 const OrderModal = ({ course, onClose }) => {
   const [isOpen, setIsOpen] = useState(false);
+  const [order, setOrder] = useState(defaultOrder);
+  const [enablePrice, setEnablePrice] = useState(false);
+  const { eth } = useEthPrice();
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    if (name === "price" && isNaN(value)) {
+      return;
+    }
+
+    setOrder({
+      ...order,
+      [name]: value,
+    });
+  };
+
+  const handleCheck = (e) => {
+    const { checked } = e.target;
+      
+    setOrder({
+      ...order,
+      price: checked ? order.price : eth.perItem,
+    });
+    setEnablePrice(checked);
+  };
 
   useEffect(() => {
     if (!!course) {
       setIsOpen(true);
+      setOrder({
+        ...defaultOrder,
+        price: eth.perItem,
+      });
     } else {
       setIsOpen(false);
+      setOrder(defaultOrder);
     }
   }, [course]);
 
@@ -30,7 +68,12 @@ const OrderModal = ({ course, onClose }) => {
                   <label className="mb-2 font-bold">Price(eth)</label>
                   <div className="text-xs text-gray-700 flex">
                     <label className="flex items-center mr-2">
-                      <input type="checkbox" className="form-checkbox" />
+                      <input
+                        className="form-checkbox"
+                        type="checkbox"
+                        checked={enablePrice}
+                        onChange={handleCheck}
+                      />
                     </label>
                     <span>
                       Adjust Price - only when the price is not correct
@@ -38,10 +81,13 @@ const OrderModal = ({ course, onClose }) => {
                   </div>
                 </div>
                 <input
+                  className="disabled:opacity-50 w-80 mb-1 focus:ring-indigo-500 shadow-md focus:border-indigo-500 block pl-7 p-4 sm:text-sm border-gray-300 rounded-md"
+                  id="price"
                   type="text"
                   name="price"
-                  id="price"
-                  className="disabled:opacity-50 w-80 mb-1 focus:ring-indigo-500 shadow-md focus:border-indigo-500 block pl-7 p-4 sm:text-sm border-gray-300 rounded-md"
+                  value={order.price}
+                  disabled={!enablePrice}
+                  onChange={handleChange}
                 />
                 <p className="text-xs text-gray-700">
                   Price will be verified at the time of the order. If the price
