@@ -7,7 +7,7 @@ const Button = ({ children, className = "", variant = "purple", ...props }) => {
 
   return (
     <button
-      className={`disabled:opacity-50 disabled:cursor-not-allowed px-8 py-3 border text-base font-medium rounded-md ${variants[variant]} ${className}`}
+      className={`disabled:opacity-50 disabled:cursor-not-allowed disabled:pointer-events-none px-8 py-3 border text-base font-medium rounded-md ${variants[variant]} ${className}`}
       {...props}
     >
       {children}
