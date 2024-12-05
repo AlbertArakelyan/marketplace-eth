@@ -19,6 +19,10 @@ const Marketplace = ({ courses }) => {
     setSelectedCourse(null);
   };
 
+  const handlePurchaseCourse = (order) => {
+    alert(JSON.stringify(order, null, 2));
+  };
+
   return (
     <BaseLayout>
       <MarketHeader />
@@ -43,7 +47,11 @@ const Marketplace = ({ courses }) => {
         )}
       </CourseList>
       {selectedCourse && (
-        <OrderModal course={selectedCourse} onClose={handleCloseOrderModal} />
+        <OrderModal
+          course={selectedCourse}
+          onSubmit={handlePurchaseCourse}
+          onClose={handleCloseOrderModal}
+        />
       )}
     </BaseLayout>
   );

@@ -25,7 +25,7 @@ const EthRates = () => {
       <div className="flex flex-1 items-stretch text-center">
         <div className="py-10 px-8 border drop-shadow rounded-md">
           <div className="inline-flex items-center">
-            <span className="text-2xl font-bold">${eth.ethPerItem}</span>
+            <span className="text-2xl font-bold">{eth.perItem}</span>
             <Image
               layout="fixed"
               width={35}

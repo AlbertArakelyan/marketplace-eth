@@ -10,11 +10,42 @@ const defaultOrder = {
   confirmationEmail: "",
 };
 
-const OrderModal = ({ course, onClose }) => {
+const _createFormState = (isDisabled = false, message = "") => {
+  return {
+    isDisabled,
+    message,
+  };
+};
+
+const createFormState = ({ price, email, confirmationEmail }, hasAgreedTOS) => {
+  if (!price || Number(price) <= 0) {
+    return _createFormState(true, "Price is not valid.");
+  }
+
+  if (email.length === 0 || confirmationEmail.length === 0) {
+    return _createFormState(true);
+  }
+
+  if (email !== confirmationEmail) {
+    return _createFormState(true, "Emails do not match.");
+  }
+
+  if (!hasAgreedTOS) {
+    return _createFormState(true, "You must agree to the terms of service.");
+  }
+
+  return _createFormState();
+};
+
+const OrderModal = ({ course, onClose, onSubmit }) => {
+  const { eth } = useEthPrice();
+
   const [isOpen, setIsOpen] = useState(false);
   const [order, setOrder] = useState(defaultOrder);
   const [enablePrice, setEnablePrice] = useState(false);
-  const { eth } = useEthPrice();
+  const [hasAgreedTOS, setHasAgreedTOS] = useState(false);
+
+  const formState = createFormState(order, hasAgreedTOS);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -38,8 +69,13 @@ const OrderModal = ({ course, onClose }) => {
     setEnablePrice(checked);
   };
 
+  const handleCheckTOS = (e) => {
+    const { checked } = e.target;
+    setHasAgreedTOS(checked);
+  };
+
   const handleSubmit = () => {
-    alert(JSON.stringify(order, null, 2));
+    onSubmit(order);
   };
 
   useEffect(() => {
@@ -52,6 +88,8 @@ const OrderModal = ({ course, onClose }) => {
     } else {
       setIsOpen(false);
       setOrder(defaultOrder);
+      setEnablePrice(false);
+      setHasAgreedTOS(false);
     }
   }, [course, eth.perItem]);
 
@@ -134,7 +172,12 @@ const OrderModal = ({ course, onClose }) => {
               </div>
               <div className="text-xs text-gray-700 flex">
                 <label className="flex items-center mr-2">
-                  <input type="checkbox" className="form-checkbox" />
+                  <input
+                    className="form-checkbox"
+                    type="checkbox"
+                    checked={hasAgreedTOS}
+                    onChange={handleCheckTOS}
+                  />
                 </label>
                 <span>
                   I accept Eincode &apos;terms of service&apos; and I agree that
@@ -142,11 +185,18 @@ const OrderModal = ({ course, onClose }) => {
                   not correct
                 </span>
               </div>
+              {formState.message && (
+                <div className="my-3 p-4 text-red-700 bg-red-200 rounded-lg text-sm">
+                  <p>{formState.message}</p>
+                </div>
+              )}
             </div>
           </div>
         </div>
         <div className="bg-gray-50 px-4 py-3 sm:px-6 sm:flex">
-          <Button onClick={handleSubmit}>Submit</Button>
+          <Button disabled={formState.isDisabled} onClick={handleSubmit}>
+            Submit
+          </Button>
           <Button variant="red" onClick={onClose}>
             Cancel
           </Button>
