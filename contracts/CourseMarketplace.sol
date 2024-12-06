@@ -25,8 +25,33 @@ contract CourseMarketplace {
   // number of all courses + id of the course
   uint private totalOwnedCourses;
 
+  address payable private owner;
+
+  constructor() {
+    setContractOwner(msg.sender);
+  }
+
+  // with 3 slashes we can specify an error message
+  /// Course has already an Owner!
+  error CourseHasHowner();
+
+  /// Only owner has access
+  error OnlyOwner();
+
+  modifier onlyOwner() {
+    if (msg.sender != getContractOwner()) {
+      revert OnlyOwner();
+    }
+    _;
+  }
+
   function purchaseCourse(bytes16 courseId, bytes32 proof) external payable {
     bytes32 courseHash = keccak256(abi.encodePacked(courseId, msg.sender));
+
+    if (hasCourseOwnership(courseHash)) {
+      revert CourseHasHowner();
+    }
+
     uint id = totalOwnedCourses++;
 
     ownedCourseHash[id] = courseHash;
@@ -39,6 +64,10 @@ contract CourseMarketplace {
     });
   }
 
+  function transferOwnership(address newOwner) external onlyOwner {
+    setContractOwner(newOwner);
+  }
+
   function getCourseCount() external view returns (uint) {
     return totalOwnedCourses;
   }
@@ -49,5 +78,17 @@ contract CourseMarketplace {
 
   function getCourseByHash(bytes32 courseHash) external view returns(Course memory) {
     return ownedCourses[courseHash];
+  }
+
+  function getContractOwner() public view returns(address) {
+    return owner;
+  }
+
+  function setContractOwner(address newOwner) private {
+    owner = payable(newOwner);
+  }
+
+  function hasCourseOwnership(bytes32 courseHash) private view returns(bool) {
+    return ownedCourses[courseHash].owner == msg.sender;
   }
 }
