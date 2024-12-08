@@ -15,13 +15,11 @@ export const useNetwork = () => {
   return enhanceHook(useHooks((hooks) => hooks.useNetwork)());
 };
 
-export const useOwnedCourses = () => {
-  const res = useHooks((hooks) => hooks.useOwnedCourses)();
+export const useOwnedCourses = (courses, account) => {
+  const swrRes = useHooks((hooks) => hooks.useOwnedCourses)(courses, account);
 
   return {
-    ownedCourses: {
-      data: res,
-    },
+    ownedCourses: swrRes,
   };
 };
 
