@@ -16,7 +16,7 @@ export const useNetwork = () => {
 };
 
 export const useOwnedCourses = (courses, account) => {
-  const swrRes = useHooks((hooks) => hooks.useOwnedCourses)(courses, account);
+  const swrRes = enhanceHook(useHooks((hooks) => hooks.useOwnedCourses)(courses, account));
 
   return {
     ownedCourses: swrRes,

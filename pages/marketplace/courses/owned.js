@@ -9,10 +9,10 @@ import { getAllCourses } from "@/content/courses/fetcher";
 const OwnedCourses = ({ courses }) => {
   const { account } = useWalletInfo();
   const { ownedCourses } = useOwnedCourses(courses, account.data);
-
+  console.log(ownedCourses);
   return (
     <BaseLayout>
-      {JSON.stringify(ownedCourses.data)}
+      <pre>{JSON.stringify(ownedCourses.data, null, 2)}</pre>
       <MarketHeader />
       <section className="grid grid-cols-1">
         <OwnedCourseCard>
