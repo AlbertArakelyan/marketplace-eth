@@ -9,16 +9,17 @@ import { getAllCourses } from "@/content/courses/fetcher";
 const OwnedCourses = ({ courses }) => {
   const { account } = useWalletInfo();
   const { ownedCourses } = useOwnedCourses(courses, account.data);
-  console.log(ownedCourses);
+
   return (
     <BaseLayout>
-      <pre>{JSON.stringify(ownedCourses.data, null, 2)}</pre>
       <MarketHeader />
       <section className="grid grid-cols-1">
-        <OwnedCourseCard>
-          <Message>My custom message!</Message>
-          <Button>Watch the course</Button>
-        </OwnedCourseCard>
+        {ownedCourses.data?.map((course) => (
+          <OwnedCourseCard key={course.id} course={course}>
+            {/* <Message>My custom message!</Message> */}
+            <Button>Watch the course</Button>
+          </OwnedCourseCard>
+        ))}
       </section>
     </BaseLayout>
   );
