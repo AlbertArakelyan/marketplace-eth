@@ -11,15 +11,15 @@ const OwnedCourseCard = ({ children, course }) => {
 
   return (
     <div className="bg-white border shadow overflow-hidden sm:rounded-lg mb-3">
-      <div className="flex">
-        <div className="flex-1">
+      <div className="flex h-full">
+        <div className="flex-1 h-full">
           <div className="h-full next-image-wrapper">
             <Image
-              className="object-cover"
+              className="object-cover !h-full w-full"
               src={course.coverImage}
               alt={course.title}
-              width="45"
-              height="45"
+              width={45}
+              height={45}
               layout="responsive"
             />
           </div>

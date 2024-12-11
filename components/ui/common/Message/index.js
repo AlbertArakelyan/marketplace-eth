@@ -1,10 +1,34 @@
 import { useState } from "react";
 
 const TYPES = {
+  info: "blue",
   success: "green",
   warning: "yellow",
   danger: "red",
 };
+
+const TYPES_MAPPING = {
+  [TYPES.info]: {
+    textColor: "text-blue-900",
+    bgColor: "bg-blue-100",
+    closeIconColor: "text-blue-600",
+  },
+  [TYPES.success]: {
+    textColor: "text-green-900",
+    bgColor: "bg-green-100",
+    closeIconColor: "text-green-600",
+  },
+  [TYPES.warning]: {
+    textColor: "text-yellow-900",
+    bgColor: "bg-yellow-100",
+    closeIconColor: "text-yellow-600",
+  },
+  [TYPES.danger]: {
+    textColor: "text-red-900",
+    bgColor: "bg-red-100",
+    closeIconColor: "text-red-600",
+  },
+}
 
 const Message = ({ children, type = "success" }) => {
   const [isDisplayed, setIsDisplayed] = useState(true);
@@ -16,11 +40,11 @@ const Message = ({ children, type = "success" }) => {
   const messageType = TYPES[type];
 
   return (
-    <div className={`bg-${messageType}-100 rounded-xl mb-3`}>
+    <div className={`${TYPES_MAPPING[messageType].bgColor} rounded-xl mb-3`}>
       <div className="max-w-7xl mx-auto py-3 px-3 sm:px-3 lg:px-3">
         <div className="flex items-center justify-between flex-wrap">
           <div className="w-0 flex-1 flex items-center">
-            <p className={`ml-3 font-medium text-${messageType}-900 truncate`}>
+            <p className={`ml-3 font-medium ${TYPES_MAPPING[messageType].textColor}`}>
               <span className="hidden md:inline">{children}</span>
             </p>
           </div>
@@ -32,7 +56,7 @@ const Message = ({ children, type = "success" }) => {
             >
               <span className="sr-only">Dismiss</span>
               <svg
-                className={`h-6 w-6 text-${messageType}-900`}
+                className={`h-6 w-6 ${TYPES_MAPPING[messageType].closeIconColor}`}
                 xmlns="http://www.w3.org/2000/svg"
                 fill="none"
                 viewBox="0 0 24 24"

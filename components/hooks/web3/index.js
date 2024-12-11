@@ -23,6 +23,14 @@ export const useOwnedCourses = (courses, account) => {
   };
 };
 
+export const useOwnedCourse = (course, account) => {
+  const swrRes = enhanceHook(useHooks((hooks) => hooks.useOwnedCourse)(course, account));
+
+  return {
+    ownedCourse: swrRes,
+  };
+};
+
 export const useWalletInfo = () => {
   const { account } = useAccount();
   const { network } = useNetwork();

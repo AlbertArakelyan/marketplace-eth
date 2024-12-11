@@ -1,4 +1,4 @@
-const defaultTheme = require("tailwindcss/defaultTheme")
+const defaultTheme = require("tailwindcss/defaultTheme");
 
 /** @type {import('tailwindcss').Config} */
 module.exports = {
@@ -15,6 +15,13 @@ module.exports = {
     extend: {
       maxWidth: {
         "8xl": "1920px",
+      },
+      flex: {
+        2: "2 2 0%",
+        3: "3 3 0%",
+        4: "4 4 0%",
+        5: "5 5 0%",
+        6: "6 6 0%",
       },
     },
   },
