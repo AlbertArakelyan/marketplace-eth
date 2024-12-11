@@ -55,6 +55,7 @@ const Message = ({ children, type = "success" }) => {
               className="-mr-1 flex p-2 rounded-md focus:outline-none focus:ring-2 sm:-mr-2"
             >
               <span className="sr-only">Dismiss</span>
+              
               <svg
                 className={`h-6 w-6 ${TYPES_MAPPING[messageType].closeIconColor}`}
                 xmlns="http://www.w3.org/2000/svg"
