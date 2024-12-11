@@ -28,7 +28,7 @@ const TYPES_MAPPING = {
     bgColor: "bg-red-100",
     closeIconColor: "text-red-600",
   },
-}
+};
 
 const Message = ({ children, type = "success" }) => {
   const [isDisplayed, setIsDisplayed] = useState(true);
@@ -44,7 +44,9 @@ const Message = ({ children, type = "success" }) => {
       <div className="max-w-7xl mx-auto py-3 px-3 sm:px-3 lg:px-3">
         <div className="flex items-center justify-between flex-wrap">
           <div className="w-0 flex-1 flex items-center">
-            <p className={`ml-3 font-medium ${TYPES_MAPPING[messageType].textColor}`}>
+            <p
+              className={`ml-3 font-medium ${TYPES_MAPPING[messageType].textColor}`}
+            >
               <span className="hidden md:inline">{children}</span>
             </p>
           </div>
@@ -55,7 +57,6 @@ const Message = ({ children, type = "success" }) => {
               className="-mr-1 flex p-2 rounded-md focus:outline-none focus:ring-2 sm:-mr-2"
             >
               <span className="sr-only">Dismiss</span>
-              
               <svg
                 className={`h-6 w-6 ${TYPES_MAPPING[messageType].closeIconColor}`}
                 xmlns="http://www.w3.org/2000/svg"
