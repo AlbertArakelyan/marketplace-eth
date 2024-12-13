@@ -7,11 +7,14 @@ import { BaseLayout } from "@/components/ui/layout";
 import { MarketHeader } from "@/components/ui/Marketplace";
 
 import { useOwnedCourses, useWalletInfo } from "@/components/hooks/web3";
+import { useWeb3 } from "@/components/providers";
+
 import { getAllCourses } from "@/content/courses/fetcher";
 
 const OwnedCourses = ({ courses }) => {
   const router = useRouter();
 
+  const { requireInstall } = useWeb3();
   const { account } = useWalletInfo();
   const { ownedCourses } = useOwnedCourses(courses, account.data);
 
@@ -31,6 +34,16 @@ const OwnedCourses = ({ courses }) => {
               </Link>
               .
             </Message>
+          </div>
+        )}
+        {account.isEmpty && (
+          <div>
+            <Message>Please connect to Metamask.</Message>
+          </div>
+        )}
+        {requireInstall && (
+          <div>
+            <Message>Please install Metamask.</Message>
           </div>
         )}
         {ownedCourses.data?.map((course) => (
