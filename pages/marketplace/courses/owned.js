@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { useRouter } from "next/router";
 
 import { Button, Message } from "@/components/ui/common";
@@ -18,11 +19,22 @@ const OwnedCourses = ({ courses }) => {
     <BaseLayout>
       <MarketHeader />
       <section className="grid grid-cols-1">
+        {ownedCourses.hasInitialResponse && !ownedCourses?.data?.length && (
+          <div>
+            <Message>
+              You do not own any courses yet. You can buy them from the{" "}
+              <Link
+                className="text-indigo-600 hover:underline"
+                href="/marketplace"
+              >
+                marketplace
+              </Link>
+              .
+            </Message>
+          </div>
+        )}
         {ownedCourses.data?.map((course) => (
           <OwnedCourseCard key={course.id} course={course}>
-            {/* <Message>
-              My custom message!
-            </Message> */}
             <Button onClick={() => router.push(`/courses/${course.slug}`)}>
               Watch the course
             </Button>
