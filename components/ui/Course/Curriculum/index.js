@@ -1,3 +1,7 @@
+import Link from "next/link";
+
+import { COURSE_STATES } from "@/pages/courses/[slug]";
+
 const lectures = [
   "How to init App",
   "How to get a help",
@@ -7,7 +11,7 @@ const lectures = [
   "Safe operator",
 ];
 
-const Curriculum = ({ locked }) => {
+const Curriculum = ({ locked, courseState }) => {
   return (
     <section className="max-w-5xl mx-auto">
       <div className="flex flex-col">
@@ -47,17 +51,42 @@ const Curriculum = ({ locked }) => {
                         </div>
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap">
-                        <span className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${locked ? "bg-red-100" : "bg-green-100"} ${locked ? "text-red-800" : "text-green-800"}`}>
+                        <span
+                          className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${
+                            locked ? "bg-red-100" : "bg-green-100"
+                          } ${locked ? "text-red-800" : "text-green-800"}`}
+                        >
                           {locked ? "Locked" : "Unlocked"}
                         </span>
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                        <a
-                          href="#"
-                          className="text-indigo-600 hover:text-indigo-900"
-                        >
-                          {locked ? "Get Access" : "Play"}
-                        </a>
+                        {locked ? (
+                          <>
+                            {courseState === COURSE_STATES.deactivated && (
+                              <Link
+                                href="/marketplace"
+                                className="text-indigo-600 hover:text-indigo-900"
+                              >
+                                Get Access
+                              </Link>
+                            )}
+                            {courseState === COURSE_STATES.purchased && (
+                              <Link
+                                href="/faq"
+                                className="text-yellow-500 hover:text-yellow-900"
+                              >
+                                Waiting for activation...
+                              </Link>
+                            )}
+                          </>
+                        ) : (
+                          <Link
+                            href="/watch"
+                            className="text-indigo-600 hover:text-indigo-900"
+                          >
+                            Watch
+                          </Link>
+                        )}
                       </td>
                     </tr>
                   ))}

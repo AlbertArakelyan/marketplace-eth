@@ -6,7 +6,7 @@ import { useOwnedCourse, useAccount } from "@/components/hooks/web3";
 
 import { getAllCourses } from "@/content/courses/fetcher";
 
-const COURSE_STATES = {
+export const COURSE_STATES = {
   purchased: "purchased",
   activated: "activated",
   deactivated: "deactivated",
@@ -15,7 +15,9 @@ const COURSE_STATES = {
 const Course = ({ course }) => {
   const { account } = useAccount();
   const { ownedCourse } = useOwnedCourse(course, account.data);
+
   const courseState = ownedCourse.data?.state;
+  const isLocked = courseState !== COURSE_STATES.activated;
 
   return (
     <BaseLayout>
@@ -54,7 +56,7 @@ const Course = ({ course }) => {
           </Message>
         )}
       </div>
-      <Curriculum locked={true} />
+      <Curriculum locked={isLocked} courseState={courseState} />
       <Modal />
     </BaseLayout>
   );
