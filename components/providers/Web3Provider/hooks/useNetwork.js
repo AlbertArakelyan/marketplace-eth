@@ -34,16 +34,20 @@ export const handler = (web3, provider) => () => {
           "Cannot retrieve the network. Please refresh the browser."
         );
       }
-      
+
       return NETWORKS[chainId] ?? "Unknown";
     }
   );
 
   useEffect(() => {
-    provider &&
-      provider.on("chainChanged", (chainId) => {
-        mutate(NETWORKS[parseInt(chainId, 16)] ?? "Unknown");
-      });
+    const mutator = (chainId) =>
+      mutate(NETWORKS[parseInt(chainId, 16)] ?? "Unknown");
+
+    provider?.on("chainChanged", mutator);
+
+    return () => {
+      provider.removeListener("chainChanged", mutator);
+    };
   }, [web3]);
 
   return {
