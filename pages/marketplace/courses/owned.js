@@ -19,7 +19,7 @@ const OwnedCourses = ({ courses }) => {
     <BaseLayout>
       <MarketHeader />
       <section className="grid grid-cols-1">
-        {ownedCourses.hasInitialResponse && !ownedCourses?.data?.length && (
+        {ownedCourses.isEmpty && (
           <div>
             <Message>
               You do not own any courses yet. You can buy them from the{" "}
