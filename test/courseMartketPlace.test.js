@@ -93,4 +93,48 @@ contract("CourseMarketPlace", (accounts) => {
       );
     });
   });
+
+  describe("Transfer ownership", () => {
+    let currentOwner = null;
+
+    before(async () => {
+      currentOwner = await _contract.getContractOwner();
+    });
+
+    it("getContractOwner should return deployer address", async () => {
+      assert.equal(
+        contractOwner,
+        currentOwner,
+        "Contract owner is not matching with the on from getContractOwner funcion."
+      );
+    });
+
+    it("should NOT transfer ownership when contract owner is not sending TX", async () => {
+      await catchRevert(
+        _contract.transferOwnership(accounts[3], { from: accounts[4] })
+      );
+    });
+
+    it("should transfer ownership to 3rd address from 'accounts'", async () => {
+      await _contract.transferOwnership(accounts[2], { from: currentOwner });
+      const owner = await _contract.getContractOwner();
+
+      assert.equal(
+        owner,
+        accounts[2],
+        "Contract owner is not matching with the on from getContractOwner funcion or new owner is not set and it is not 3rd account."
+      );
+    });
+
+    it("should transfer ownership back to initial contract owner", async () => {
+      await _contract.transferOwnership(contractOwner, { from: accounts[2] });
+      const owner = await _contract.getContractOwner();
+
+      assert.equal(
+        owner,
+        contractOwner,
+        "Contract owner is not matching with the on from getContractOwner funcion or new owner is not set and it is not 3rd account."
+      );
+    });
+  });
 });
