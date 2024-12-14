@@ -13,8 +13,6 @@ const ManagedCourses = () => {
   const { account } = useAccount();
   const { managedCourses } = useManagedCourses(account.data);
 
-  console.log("managedCourse", managedCourses.data);
-
   return (
     <BaseLayout>
       <div>
