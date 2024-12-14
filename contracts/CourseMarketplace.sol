@@ -52,6 +52,8 @@ contract CourseMarketplace {
   }
 
   function purchaseCourse(bytes16 courseId, bytes32 proof) external payable {
+    // courseId 0x00000000000000000000000000003130
+    // proof 0x0000000000000000000000000000313000000000000000000000000000003130
     bytes32 courseHash = keccak256(abi.encodePacked(courseId, msg.sender));
 
     if (hasCourseOwnership(courseHash)) {
