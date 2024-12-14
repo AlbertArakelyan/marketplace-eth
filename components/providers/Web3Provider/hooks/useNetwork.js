@@ -46,7 +46,7 @@ export const handler = (web3, provider) => () => {
     provider?.on("chainChanged", mutator);
 
     return () => {
-      provider.removeListener("chainChanged", mutator);
+      provider?.removeListener("chainChanged", mutator);
     };
   }, [web3]);
 
