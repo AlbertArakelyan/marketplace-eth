@@ -17,12 +17,6 @@ contract("CourseMarketPlace", (accounts) => {
     _contract = await CourseMarketPlace.deployed();
     contractOwner = accounts[0];
     buyer = accounts[1];
-
-    // console.group("CourseMarketPlace");
-    // console.log("_contract", _contract);
-    // console.log("contractOwner", contractOwner);
-    // console.log("buyer", buyer);
-    // console.groupEnd();
   });
 
   describe("Purchase the new course", () => {
