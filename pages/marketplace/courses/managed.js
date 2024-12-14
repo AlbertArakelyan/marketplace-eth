@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/common";
 
 import { useAccount, useManagedCourses } from "@/components/hooks/web3";
 
-const ManageCourses = () => {
+const ManagedCourses = () => {
   const { account } = useAccount();
   const { managedCourses } = useManagedCourses(account.data);
 
@@ -35,4 +35,4 @@ const ManageCourses = () => {
   );
 };
 
-export default ManageCourses;
+export default ManagedCourses;
