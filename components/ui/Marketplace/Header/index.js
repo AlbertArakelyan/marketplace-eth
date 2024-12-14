@@ -4,7 +4,7 @@ import { Breadcrumbs } from "@/components/ui/common";
 const LINKS = [
   {href: "/marketplace", value: "Buy"},
   {href: "/marketplace/courses/owned", value: "My Courses"},
-  {href: "/marketplace/courses/manage", value: "Manage Courses"},
+  {href: "/marketplace/courses/managed", value: "Manage Courses"},
 ]
 
 const Header = () => {
