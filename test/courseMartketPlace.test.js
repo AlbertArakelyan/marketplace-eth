@@ -1,3 +1,5 @@
+const { catchRevert } = require("./utils/exceptions");
+
 const CourseMarketPlace = artifacts.require("CourseMarketPlace");
 
 // Mocha - testing framework
@@ -75,15 +77,20 @@ contract("CourseMarketPlace", (accounts) => {
   });
 
   describe("Activate the purchased course", () => {
-    before(async () => {
-      await _contract.activateCourse(courseHash, { from: contractOwner });
+    it("should NOT be able to activate course by NOT contract owner", async () => {
+      await catchRevert(_contract.activateCourse(courseHash, { from: buyer }));
     });
 
     it("should have 'ACTIVATED' state after activation by contract owner", async () => {
+      await _contract.activateCourse(courseHash, { from: contractOwner });
       const course = await _contract.getCourseByHash(courseHash);
       const expectedState = 1;
 
-      assert.equal(course.state, expectedState, "State is not matching, it should be 1 (ACTIVATED).");
+      assert.equal(
+        course.state,
+        expectedState,
+        "State is not matching, it should be 1 (ACTIVATED)."
+      );
     });
   });
 });
