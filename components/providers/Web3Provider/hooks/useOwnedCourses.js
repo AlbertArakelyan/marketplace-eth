@@ -1,7 +1,6 @@
 import useSWR from "swr";
 
 import { normalizeOwnedCourse } from "@/utils/normalize";
-
 import { createCourseHash } from "@/utils/hash";
 
 export const handler = (web3, contract) => (courses, account) => {

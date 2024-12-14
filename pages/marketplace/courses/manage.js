@@ -3,7 +3,14 @@ import { MarketHeader } from "@/components/ui/Marketplace";
 import { CourseFilter, OwnedCourseCard } from "@/components/ui/Course";
 import { Button } from "@/components/ui/common";
 
+import { useAccount, useManagedCourses } from "@/components/hooks/web3";
+
 const ManageCourses = () => {
+  const { account } = useAccount();
+  const { managedCourses } = useManagedCourses(account.data);
+
+  console.log("managedCourse", managedCourses.data);
+
   return (
     <BaseLayout>
       <div>
@@ -11,7 +18,7 @@ const ManageCourses = () => {
         <CourseFilter />
       </div>
       <section className="grid grid-cols-1">
-        <OwnedCourseCard>
+        {/* <OwnedCourseCard>
           <div className="flex mr-2 relative rounded-md">
             <input
               type="text"
@@ -22,7 +29,7 @@ const ManageCourses = () => {
             />
             <Button>Verify</Button>
           </div>
-        </OwnedCourseCard>{" "}
+        </OwnedCourseCard>{" "} */}
       </section>
     </BaseLayout>
   );
