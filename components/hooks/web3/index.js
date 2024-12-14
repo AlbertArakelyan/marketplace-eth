@@ -1,4 +1,7 @@
-import { useHooks } from "@/components/providers/Web3Provider";
+import { useEffect } from "react";
+import { useRouter } from "next/router";
+
+import { useHooks, useWeb3 } from "@/components/providers/Web3Provider";
 
 const isDataEmpty = (data) => {
   return (
@@ -23,6 +26,20 @@ const enhanceHook = (swrRes) => {
 
 export const useAccount = () => {
   return enhanceHook(useHooks((hooks) => hooks.useAccount)());
+};
+
+export const useAdmin = ({ redirectTo }) => {
+  const { account } = useAccount();
+  const { requireInstall } = useWeb3();
+  const router = useRouter();
+
+  useEffect(() => {
+    if (requireInstall || (!!account.data && account.isAdmin === false)) {
+      router.push(redirectTo);
+    }
+  }, [account, requireInstall]);
+
+  return { account };
 };
 
 export const useNetwork = () => {
