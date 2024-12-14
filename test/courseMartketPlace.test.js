@@ -12,6 +12,7 @@ contract("CourseMarketPlace", (accounts) => {
   let _contract = null;
   let contractOwner = null;
   let buyer = null;
+  let courseHash = null;
 
   before(async () => {
     _contract = await CourseMarketPlace.deployed();
@@ -20,8 +21,6 @@ contract("CourseMarketPlace", (accounts) => {
   });
 
   describe("Purchase the new course", () => {
-    let courseHash;
-
     before(async () => {
       await _contract.purchaseCourse(courseId, proof, { from: buyer, value });
     });
@@ -42,16 +41,49 @@ contract("CourseMarketPlace", (accounts) => {
       );
     });
 
-    it("should match the data of the course purchased by buyer", async() => {
+    it("should match the data of the course purchased by buyer", async () => {
       const expectedIndex = 0;
       const expectedState = 0;
-      const course = await  _contract.getCourseByHash(courseHash);
+      const course = await _contract.getCourseByHash(courseHash);
 
-      assert.equal(course.id, expectedIndex, `Course index is not matching, it should be ${expectedIndex}.`);
-      assert.equal(course.price, value, `Course price is not matching, it should be ${value}.`);
-      assert.equal(course.proof, proof, `Course proof is not matching, it should be ${proof}.`);
-      assert.equal(course.owner, buyer, `Course owner is not matching, it should be ${buyer}.`);
-      assert.equal(course.state, expectedState, `Course state is not matching, it should be ${expectedState}.`);
+      assert.equal(
+        course.id,
+        expectedIndex,
+        `Course index is not matching, it should be ${expectedIndex}.`
+      );
+      assert.equal(
+        course.price,
+        value,
+        `Course price is not matching, it should be ${value}.`
+      );
+      assert.equal(
+        course.proof,
+        proof,
+        `Course proof is not matching, it should be ${proof}.`
+      );
+      assert.equal(
+        course.owner,
+        buyer,
+        `Course owner is not matching, it should be ${buyer}.`
+      );
+      assert.equal(
+        course.state,
+        expectedState,
+        `Course state is not matching, it should be ${expectedState}.`
+      );
+    });
+  });
+
+  describe("Activate the purchased course", () => {
+    before(async () => {
+      await _contract.activateCourse(courseHash, { from: contractOwner });
+    });
+
+    it("should have 'ACTIVATED' state after activation by contract owner", async () => {
+      const course = await _contract.getCourseByHash(courseHash);
+      const expectedState = 1;
+
+      assert.equal(course.state, expectedState, "State is not matching, it should be 1 (ACTIVATED).");
     });
   });
 });
