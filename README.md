@@ -38,3 +38,40 @@ You can check out [the Next.js GitHub repository](https://github.com/vercel/next
 The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 
 Check out our [Next.js deployment documentation](https://nextjs.org/docs/pages/building-your-application/deploying) for more details.
+
+---
+
+## Drafts
+
+## Code Snippet Explanation
+
+### Code Snippet
+```solidity
+(bool success, ) = course.owner.call{value: course.price}("");
+```
+
+### Explanation
+This line of code sends the `course.price` amount of Ether back to the `course.owner` and checks if the transaction is successful. The `(bool success, )` syntax ignores the returned data and only stores the success status of the transaction in the success variable.
+
+### Additional Information
+- The `("")` is an empty string being passed as an argument to the `call` function.
+- Instead of an empty string, you could put a function signature or data payload that you want to pass to the contract.
+- This would allow you to call a specific function on the `course.owner` contract, rather than just sending Ether.
+
+### Example Use Case
+- By passing a function signature or data payload, you can execute additional logic on the `course.owner` contract after sending the Ether.
+- For example, if the `course.owner` contract has a function called `withdraw()`, you could replace the empty string with `"withdraw()"` to call that function and send the Ether as part of the function call.
+
+### Example Code
+```solidity
+(bool success, ) = course.owner.call{value: course.price}("withdraw()");
+```
+
+- This would send the `course.price` amount of Ether to the `course.owner` contract and call the `withdraw()` function, allowing you to perform additional logic, such as updating contract state or triggering other events.
+
+### Benefits
+- This approach allows you to perform more complex operations, such as updating contract state or triggering other events, as part of the same transaction.
+- It provides a more flexible and powerful way to interact with contracts, enabling you to build more sophisticated and robust decentralized applications.
+
+
+---
