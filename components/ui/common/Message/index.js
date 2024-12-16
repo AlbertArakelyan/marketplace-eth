@@ -30,7 +30,13 @@ const TYPES_MAPPING = {
   },
 };
 
-const Message = ({ children, type = "success" }) => {
+const SIZES = {
+  sm: "text-sm",
+  md: "text-base",
+  lg: "text-lg",
+}
+
+const Message = ({ children, type = "success", size = "md" }) => {
   const [isDisplayed, setIsDisplayed] = useState(true);
 
   if (!isDisplayed) {
@@ -38,14 +44,15 @@ const Message = ({ children, type = "success" }) => {
   }
 
   const messageType = TYPES[type];
+  const messageSizeClass = SIZES[size];
 
   return (
     <div className={`${TYPES_MAPPING[messageType].bgColor} rounded-xl mb-3`}>
-      <div className="max-w-7xl mx-auto py-3 px-3 sm:px-3 lg:px-3">
+      <div className="max-w-7xl mx-auto py-2 px-1">
         <div className="flex items-center justify-between flex-wrap">
           <div className="w-0 flex-1 flex items-center">
             <p
-              className={`ml-3 font-medium ${TYPES_MAPPING[messageType].textColor}`}
+              className={`ml-3 font-medium ${messageSizeClass} ${TYPES_MAPPING[messageType].textColor}`}
             >
               <span className="hidden md:inline">{children}</span>
             </p>

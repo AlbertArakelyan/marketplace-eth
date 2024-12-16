@@ -2,7 +2,7 @@ import { useState } from "react";
 
 import { CourseCard, CourseList } from "@/components/ui/Course";
 import { BaseLayout } from "@/components/ui/layout";
-import { Button } from "@/components/ui/common";
+import { Button, Message } from "@/components/ui/common";
 import { OrderModal } from "@/components/ui/Order";
 import { MarketHeader } from "@/components/ui/Marketplace";
 
@@ -10,6 +10,14 @@ import { useOwnedCourses, useWalletInfo } from "@/components/hooks/web3";
 import { useWeb3 } from "@/components/providers";
 
 import { getAllCourses } from "@/content/courses/fetcher";
+
+import { COURSE_STATES } from "@/pages/courses/[slug]";
+
+const courseStateColorMapping = {
+  [COURSE_STATES.purchased]: "warning",
+  [COURSE_STATES.activated]: "success",
+  [COURSE_STATES.deactivated]: "danger",
+};
 
 const Marketplace = ({ courses }) => {
   const { web3, contract, requireInstall } = useWeb3();
@@ -81,10 +89,16 @@ const Marketplace = ({ courses }) => {
               const owned = ownedCourses.lookup[course.id];
 
               if (owned) {
+                const courseStateText = COURSE_STATES[owned.state][0].toUpperCase() + COURSE_STATES[owned.state].slice(1);
                 return (
-                  <Button variant="green" disabled={true}>
-                    Owned
-                  </Button>
+                  <>
+                    <Button className="mb-1" variant="green" disabled={true}>
+                      Owned
+                    </Button>
+                    <Message type={courseStateColorMapping[owned.state]} size="sm">
+                      {courseStateText}
+                    </Message>
+                  </>
                 );
               }
 
