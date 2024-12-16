@@ -12,8 +12,8 @@ import { useWeb3 } from "@/components/providers";
 import { getAllCourses } from "@/content/courses/fetcher";
 
 const Marketplace = ({ courses }) => {
-  const { web3, contract } = useWeb3();
-  const { canPurchaseCourse, account } = useWalletInfo();
+  const { web3, contract, requireInstall } = useWeb3();
+  const { hasConnectedWallter, account } = useWalletInfo();
 
   const [selectedCourse, setSelectedCourse] = useState(null);
 
@@ -37,10 +37,12 @@ const Marketplace = ({ courses }) => {
     const value = web3.utils.toWei(order.price.toString());
 
     try {
-      const result = await contract.methods.purchaseCourse(hexCourseId, proof).send({
-        from: account.data,
-        value,
-      });
+      const result = await contract.methods
+        .purchaseCourse(hexCourseId, proof)
+        .send({
+          from: account.data,
+          value,
+        });
       console.log(result);
     } catch {
       console.log("Purchase course: Operation has failed");
@@ -55,18 +57,26 @@ const Marketplace = ({ courses }) => {
           <CourseCard
             key={course.id}
             course={course}
-            disabled={!canPurchaseCourse}
-            Footer={() => (
-              <div>
+            disabled={!hasConnectedWallter}
+            Footer={() => {
+              if (requireInstall) {
+                return (
+                  <Button variant="lightPurple" disabled={true}>
+                    Install
+                  </Button>
+                );
+              }
+
+              return (
                 <Button
                   variant="lightPurple"
-                  disabled={!canPurchaseCourse}
+                  disabled={!hasConnectedWallter}
                   onClick={() => setSelectedCourse(course)}
                 >
                   Purchase
                 </Button>
-              </div>
-            )}
+              );
+            }}
           />
         )}
       </CourseList>

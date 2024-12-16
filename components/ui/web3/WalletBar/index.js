@@ -23,7 +23,7 @@ const WalletBar = () => {
             </Button>
           </div>
           <div>
-            {network.hasInitialResponse && !network.isSupported && (
+            {!network.isSupported && (
               <div className="bg-red-400 p-4 rounded-lg">
                 <div>Connected to wrong network</div>
                 <div>

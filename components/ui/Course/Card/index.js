@@ -25,7 +25,9 @@ const Card = ({ course, disabled, Footer }) => {
           >
             {course.title}
           </Link>
-          <p cclassName="mt-2 text-sm sm:text-base text-gray-500">{course.description}</p>
+          <p className="mt-2 mb-2 text-sm sm:text-base text-gray-500">
+            {course.description}
+          </p>
           {Footer && <Footer />}
         </div>
       </div>
