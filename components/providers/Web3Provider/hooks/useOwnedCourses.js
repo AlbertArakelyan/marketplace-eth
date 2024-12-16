@@ -38,5 +38,20 @@ export const handler = (web3, contract) => (courses, account) => {
     }
   );
 
-  return swrRes;
+  return {
+    ...swrRes,
+    lookup:
+      swrRes.data?.reduce((acc, course) => {
+        acc[course.id] = course;
+
+        return acc;
+      }, {}) ?? {},
+    lookupHashTable:
+      swrRes.data?.reduce((acc, course) => {
+        // optional
+        acc.set(course.id, course);
+
+        return acc;
+      }, new Map()) ?? new Map(),
+  };
 };

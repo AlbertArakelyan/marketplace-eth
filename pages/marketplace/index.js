@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/common";
 import { OrderModal } from "@/components/ui/Order";
 import { MarketHeader } from "@/components/ui/Marketplace";
 
-import { useWalletInfo } from "@/components/hooks/web3";
+import { useOwnedCourses, useWalletInfo } from "@/components/hooks/web3";
 import { useWeb3 } from "@/components/providers";
 
 import { getAllCourses } from "@/content/courses/fetcher";
@@ -14,6 +14,7 @@ import { getAllCourses } from "@/content/courses/fetcher";
 const Marketplace = ({ courses }) => {
   const { web3, contract, requireInstall } = useWeb3();
   const { hasConnectedWallter, account } = useWalletInfo();
+  const { ownedCourses } = useOwnedCourses(courses, account.data);
 
   const [selectedCourse, setSelectedCourse] = useState(null);
 
@@ -63,6 +64,26 @@ const Marketplace = ({ courses }) => {
                 return (
                   <Button variant="lightPurple" disabled={true}>
                     Install
+                  </Button>
+                );
+              }
+
+              // add case for is connecting
+
+              if (!ownedCourses.hasInitialResponse) {
+                return (
+                  <Button variant="lightPurple" disabled={true}>
+                    Loading State
+                  </Button>
+                );
+              }
+
+              const owned = ownedCourses.lookup[course.id];
+
+              if (owned) {
+                return (
+                  <Button variant="green" disabled={true}>
+                    Owned
                   </Button>
                 );
               }
