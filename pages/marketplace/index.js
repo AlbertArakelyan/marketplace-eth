@@ -102,7 +102,7 @@ const Marketplace = ({ courses }) => {
                       size="sm"
                       disabled={true}
                     >
-                      Owned
+                      Owned &#10004;
                     </Button>
                     {owned.state === COURSE_STATES.deactivated && (
                       <Button className="mb-1" variant="purple" size="sm">
