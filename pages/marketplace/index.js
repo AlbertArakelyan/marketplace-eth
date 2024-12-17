@@ -25,9 +25,11 @@ const Marketplace = ({ courses }) => {
   const { ownedCourses } = useOwnedCourses(courses, account.data);
 
   const [selectedCourse, setSelectedCourse] = useState(null);
+  const [isNewPurchase, setIsNewPurchase] = useState(true);
 
   const handleCloseOrderModal = () => {
     setSelectedCourse(null);
+    setIsNewPurchase(true);
   };
 
   const handlePurchaseCourse = async (order) => {
@@ -105,7 +107,15 @@ const Marketplace = ({ courses }) => {
                       Owned &#10004;
                     </Button>
                     {owned.state === COURSE_STATES.deactivated && (
-                      <Button className="mb-1" variant="purple" size="sm">
+                      <Button
+                        className="mb-1"
+                        variant="purple"
+                        size="sm"
+                        onClick={() => {
+                          setSelectedCourse(false);
+                          setSelectedCourse(course)
+                        }}
+                      >
                         Fund to Activate
                       </Button>
                     )}
@@ -135,6 +145,7 @@ const Marketplace = ({ courses }) => {
       {selectedCourse && (
         <OrderModal
           course={selectedCourse}
+          isNewPurchase={isNewPurchase}
           onSubmit={handlePurchaseCourse}
           onClose={handleCloseOrderModal}
         />
