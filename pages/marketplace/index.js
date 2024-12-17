@@ -66,6 +66,7 @@ const Marketplace = ({ courses }) => {
           <CourseCard
             key={course.id}
             course={course}
+            state={ownedCourses.lookup[course.id]?.state}
             disabled={!hasConnectedWallter}
             Footer={() => {
               if (requireInstall) {
@@ -89,13 +90,29 @@ const Marketplace = ({ courses }) => {
               const owned = ownedCourses.lookup[course.id];
 
               if (owned) {
-                const courseStateText = COURSE_STATES[owned.state][0].toUpperCase() + COURSE_STATES[owned.state].slice(1);
+                const courseStateText =
+                  COURSE_STATES[owned.state][0].toUpperCase() +
+                  COURSE_STATES[owned.state].slice(1);
+
                 return (
                   <>
-                    <Button className="mb-1" variant="green" disabled={true}>
+                    <Button
+                      className="mb-1"
+                      variant="green"
+                      size="sm"
+                      disabled={true}
+                    >
                       Owned
                     </Button>
-                    <Message type={courseStateColorMapping[owned.state]} size="sm">
+                    {owned.state === COURSE_STATES.deactivated && (
+                      <Button className="mb-1" variant="purple" size="sm">
+                        Fund to Activate
+                      </Button>
+                    )}
+                    <Message
+                      type={courseStateColorMapping[owned.state]}
+                      size="sm"
+                    >
                       {courseStateText}
                     </Message>
                   </>
