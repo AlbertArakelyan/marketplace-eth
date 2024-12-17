@@ -139,7 +139,7 @@ const OrderModal = ({ course, onClose, onSubmit, isNewPurchase }) => {
                   allowed)
                 </p>
               </div>
-              {!isNewPurchase && (
+              {isNewPurchase && (
                 <>
                   <div className="mt-2 relative rounded-md">
                     <div className="mb-1">

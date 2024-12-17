@@ -38,15 +38,23 @@ const Marketplace = ({ courses }) => {
       { type: "bytes16", value: hexCourseId },
       { type: "address", value: account.data }
     );
-    const emailHash = web3.utils.sha3(order.email);
-
-    const proof = web3.utils.soliditySha3(
-      { type: "bytes32", value: emailHash },
-      { type: "bytes32", value: orderHash }
-    );
 
     const value = web3.utils.toWei(order.price.toString());
 
+    if (isNewPurchase) {
+      const emailHash = web3.utils.sha3(order.email);
+      const proof = web3.utils.soliditySha3(
+        { type: "bytes32", value: emailHash },
+        { type: "bytes32", value: orderHash }
+      );
+
+      await _purchaseCourse(hexCourseId, proof, value);
+    } else {
+      await _repurchaseCourse(orderHash, value);
+    }
+  };
+
+  const _purchaseCourse = async (hexCourseId, proof, value) => {
     try {
       const result = await contract.methods
         .purchaseCourse(hexCourseId, proof)
@@ -54,6 +62,18 @@ const Marketplace = ({ courses }) => {
           from: account.data,
           value,
         });
+      console.log(result);
+    } catch {
+      console.log("Purchase course: Operation has failed");
+    }
+  };
+
+  const _repurchaseCourse = async (courseHash, value) => {
+    try {
+      const result = await contract.methods.repurchaseCourse(courseHash).send({
+        from: account.data,
+        value,
+      });
       console.log(result);
     } catch {
       console.log("Purchase course: Operation has failed");
@@ -112,8 +132,8 @@ const Marketplace = ({ courses }) => {
                         variant="purple"
                         size="sm"
                         onClick={() => {
-                          setSelectedCourse(false);
-                          setSelectedCourse(course)
+                          setIsNewPurchase(false);
+                          setSelectedCourse(course);
                         }}
                       >
                         Fund to Activate
