@@ -92,6 +92,42 @@ const ManagedCourses = () => {
     }
   };
 
+  const renderCard = (course, isSearched) => {
+    return (
+      <ManagedCourseCard
+        key={course.ownedCourseId}
+        course={course}
+        isSearched={isSearched}
+      >
+        <VerificationInput
+          onVerify={(email) =>
+            verifyCourse(email, { hash: course.hash, proof: course.proof })
+          }
+        />
+        {proofedOwnership[course.hash] && (
+          <div className="mt-2">
+            <Message>Verified!</Message>
+          </div>
+        )}
+        {proofedOwnership[course.hash] === false && (
+          <div className="mt-2">
+            <Message type="danger">Wrong Proof!</Message>
+          </div>
+        )}
+        {course.state === "purchased" && (
+          <div className="mt-2">
+            <Button variant="green" onClick={() => activateCourse(course.hash)}>
+              Activate
+            </Button>
+            <Button variant="red" onClick={() => deactivateCourse(course.hash)}>
+              Deactivate
+            </Button>
+          </div>
+        )}
+      </ManagedCourseCard>
+    );
+  };
+
   if (!account.isAdmin) {
     return null;
   }
@@ -103,41 +139,14 @@ const ManagedCourses = () => {
         <CourseFilter onSearchSubmit={searchCourse} />
       </div>
       <section className="grid grid-cols-1">
-        {managedCourses.data?.map((course) => (
-          <ManagedCourseCard key={course.ownedCourseId} course={course}>
-            <VerificationInput
-              onVerify={(email) =>
-                verifyCourse(email, { hash: course.hash, proof: course.proof })
-              }
-            />
-            {proofedOwnership[course.hash] && (
-              <div className="mt-2">
-                <Message>Verified!</Message>
-              </div>
-            )}
-            {proofedOwnership[course.hash] === false && (
-              <div className="mt-2">
-                <Message type="danger">Wrong Proof!</Message>
-              </div>
-            )}
-            {course.state === "purchased" && (
-              <div className="mt-2">
-                <Button
-                  variant="green"
-                  onClick={() => activateCourse(course.hash)}
-                >
-                  Activate
-                </Button>
-                <Button
-                  variant="red"
-                  onClick={() => deactivateCourse(course.hash)}
-                >
-                  Deactivate
-                </Button>
-              </div>
-            )}
-          </ManagedCourseCard>
-        ))}
+        {searchedCourse && (
+          <div>
+            <h2 className="text-2xl font-bold my-5 pl-5">Serached Course</h2>
+            {renderCard(searchedCourse, true)}
+          </div>
+        )}
+        <h2 className="text-2xl font-bold my-5 pl-5">All Courses</h2>
+        {managedCourses.data?.map((course) => renderCard(course))}
       </section>
     </BaseLayout>
   );
