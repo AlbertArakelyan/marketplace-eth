@@ -8,6 +8,8 @@ import { Button, Message } from "@/components/ui/common";
 import { useAdmin, useManagedCourses } from "@/components/hooks/web3";
 import { useWeb3 } from "@/components/providers";
 
+import { normalizeOwnedCourse } from "@/utils/normalize";
+
 const VerificationInput = ({ onVerify }) => {
   const [email, setEmail] = useState("");
 
@@ -37,6 +39,7 @@ const ManagedCourses = () => {
   const { managedCourses } = useManagedCourses(account);
 
   const [proofedOwnership, setProofedOwnership] = useState({});
+  const [searchedCourse, setSearchedCourse] = useState(null);
 
   const verifyCourse = (email, { hash, proof }) => {
     const emailHash = web3.utils.sha3(email);
@@ -70,6 +73,25 @@ const ManagedCourses = () => {
     changeCourseState(courseHash, "deactivateCourse");
   };
 
+  const searchCourse = async (courseHash) => {
+    const regex = /[0-9A-Fa-f]{6}/g;
+
+    if (!(courseHash && courseHash.length === 66 && regex.test(courseHash))) {
+      return setSearchedCourse(null);
+    }
+
+    const course = await contract.methods.getCourseByHash(courseHash).call();
+
+    if (course.owner !== "0x0000000000000000000000000000000000000000") {
+      const normalizedCourse = normalizeOwnedCourse(web3)(
+        { hash: courseHash },
+        course
+      );
+
+      setSearchedCourse(normalizedCourse);
+    }
+  };
+
   if (!account.isAdmin) {
     return null;
   }
@@ -78,7 +100,7 @@ const ManagedCourses = () => {
     <BaseLayout>
       <div>
         <MarketHeader />
-        <CourseFilter />
+        <CourseFilter onSearchSubmit={searchCourse} />
       </div>
       <section className="grid grid-cols-1">
         {managedCourses.data?.map((course) => (
