@@ -40,7 +40,7 @@ const ManagedCourses = () => {
 
   const [proofedOwnership, setProofedOwnership] = useState({});
   const [searchedCourse, setSearchedCourse] = useState(null);
-  const [filters, setFilters] = useState({ state: "" });
+  const [filters, setFilters] = useState({ state: "all" });
 
   const verifyCourse = (email, { hash, proof }) => {
     const emailHash = web3.utils.sha3(email);
@@ -137,6 +137,16 @@ const ManagedCourses = () => {
     return null;
   }
 
+  const filteredCourses = managedCourses.data
+    ?.filter((course) => {
+      if (filters.state === "all") {
+        return true;
+      }
+
+      return course.state === filters.state;
+    })
+    .map((course) => renderCard(course));
+
   return (
     <BaseLayout>
       <div>
@@ -154,7 +164,10 @@ const ManagedCourses = () => {
           </div>
         )}
         <h2 className="text-2xl font-bold my-5 pl-5">All Courses</h2>
-        {managedCourses.data?.map((course) => renderCard(course))}
+        {filteredCourses}
+        {!filteredCourses?.length && (
+          <Message type="warning">No courses found</Message>
+        )}
       </section>
     </BaseLayout>
   );
