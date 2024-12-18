@@ -2,11 +2,17 @@ import { useState } from "react";
 
 import { Button } from "@/components/ui/common";
 
-const CourseFilter = ({ onSearchSubmit }) => {
+const OPTIONS = ["all", "purchased", "activated", "deactivated"];
+
+const CourseFilter = ({ onSearchSubmit, onFilterSelect }) => {
   const [searchText, setSearchText] = useState("");
 
   const handleSearch = (e) => {
     setSearchText(e.target.value);
+  };
+
+  const handleSelect = (e) => {
+    console.log(e.target.value);
   };
 
   return (
@@ -27,10 +33,14 @@ const CourseFilter = ({ onSearchSubmit }) => {
         <select
           className="w-72 h-10 pl-3 pr-6 text-base placeholder-gray-600 border rounded-lg appearance-none focus:shadow-outline"
           placeholder="Regular input"
+          onChange={(e) => onFilterSelect(e.target.value)}
         >
+          {OPTIONS.map((option) => (
+            <option key={option} value={option}>
+              {option}
+            </option>
+          ))}
           <option>A regular sized select input</option>
-          <option>Another option</option>
-          <option>And one more</option>
         </select>
         <div className="absolute inset-y-0 right-0 flex items-center px-2 pointer-events-none">
           <svg className="w-4 h-4 fill-current" viewBox="0 0 20 20">

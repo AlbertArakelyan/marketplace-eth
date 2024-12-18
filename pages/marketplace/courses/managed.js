@@ -40,6 +40,7 @@ const ManagedCourses = () => {
 
   const [proofedOwnership, setProofedOwnership] = useState({});
   const [searchedCourse, setSearchedCourse] = useState(null);
+  const [filters, setFilters] = useState({ state: "" });
 
   const verifyCourse = (email, { hash, proof }) => {
     const emailHash = web3.utils.sha3(email);
@@ -92,6 +93,10 @@ const ManagedCourses = () => {
     }
   };
 
+  const selectCourseState = (value) => {
+    setFilters({ state: value });
+  };
+
   const renderCard = (course, isSearched) => {
     return (
       <ManagedCourseCard
@@ -136,7 +141,10 @@ const ManagedCourses = () => {
     <BaseLayout>
       <div>
         <MarketHeader />
-        <CourseFilter onSearchSubmit={searchCourse} />
+        <CourseFilter
+          onSearchSubmit={searchCourse}
+          onFilterSelect={selectCourseState}
+        />
       </div>
       <section className="grid grid-cols-1">
         {searchedCourse && (
