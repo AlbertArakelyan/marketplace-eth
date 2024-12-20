@@ -61,7 +61,34 @@ contract CourseMarketplace {
     _;
   }
 
+  modifier onlyWhenStopped {
+    require(isStopped, "Contract is not stopped");
+    _;
+  }
+
   receive() external payable {}
+
+  function withdraw(uint amount) external onlyOwner {
+    (bool success, ) = owner.call{value: amount}("");
+    require(success, "Transfering failed.");
+  }
+
+  function emergencyWithdraw() external onlyWhenStopped onlyOwner {
+    (bool success, ) = owner.call{value: address(this).balance}("");
+    require(success, "Transfering failed.");
+  }
+
+  function selfDestruct() external onlyWhenStopped onlyOwner {
+    // selfdestruct(owner);
+    /**
+     * selfdestruct is deprecated, I found the solution here
+     * https://ethereum.stackexchange.com/questions/144210/selfdestruct-deprecated-in-solidity-0-8-18
+     */
+    (bool success,) = payable(owner).call{value: address(this).balance}("");
+    if (!success) {
+      revert("call{value} failed");
+    }
+  }
 
   function stopContract() external onlyOwner {
     isStopped = true;
