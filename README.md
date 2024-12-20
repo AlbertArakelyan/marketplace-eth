@@ -46,23 +46,28 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/pages/b
 ## Code Snippet Explanation
 
 ### Code Snippet
+
 ```solidity
 (bool success, ) = course.owner.call{value: course.price}("");
 ```
 
 ### Explanation
+
 This line of code sends the `course.price` amount of Ether back to the `course.owner` and checks if the transaction is successful. The `(bool success, )` syntax ignores the returned data and only stores the success status of the transaction in the success variable.
 
 ### Additional Information
+
 - The `("")` is an empty string being passed as an argument to the `call` function.
 - Instead of an empty string, you could put a function signature or data payload that you want to pass to the contract.
 - This would allow you to call a specific function on the `course.owner` contract, rather than just sending Ether.
 
 ### Example Use Case
+
 - By passing a function signature or data payload, you can execute additional logic on the `course.owner` contract after sending the Ether.
 - For example, if the `course.owner` contract has a function called `withdraw()`, you could replace the empty string with `"withdraw()"` to call that function and send the Ether as part of the function call.
 
 ### Example Code
+
 ```solidity
 (bool success, ) = course.owner.call{value: course.price}("withdraw()");
 ```
@@ -70,8 +75,13 @@ This line of code sends the `course.price` amount of Ether back to the `course.o
 - This would send the `course.price` amount of Ether to the `course.owner` contract and call the `withdraw()` function, allowing you to perform additional logic, such as updating contract state or triggering other events.
 
 ### Benefits
+
 - This approach allows you to perform more complex operations, such as updating contract state or triggering other events, as part of the same transaction.
 - It provides a more flexible and powerful way to interact with contracts, enabling you to build more sophisticated and robust decentralized applications.
 
-
 ---
+
+# @truffle/hdwallet-provider
+
+@truffle/hdwallet-provider is depracated, instead can be used [Truffle Dashboard](https://archive.trufflesuite.com/docs/truffle/how-to/use-the-truffle-dashboard/).
+Found the solution here https://stackoverflow.com/questions/69290557/truffle-hdwalletprovider-alternative
