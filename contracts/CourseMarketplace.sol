@@ -61,6 +61,8 @@ contract CourseMarketplace {
     _;
   }
 
+  receive() external payable {}
+
   function stopContract() external onlyOwner {
     isStopped = true;
   }
